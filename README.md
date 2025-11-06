@@ -1,2 +1,2 @@
 # gc-wrap
-tally gren teleg
+tal gren teleg
