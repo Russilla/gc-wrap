@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <title>Opening…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    html,body{height:100%;margin:0}
+    body{display:flex;align-items:center;justify-content:center;font:16px/1.4 system-ui;background:#0f172a;color:#e2e8f0}
+    .box{opacity:.9;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="box">Opening…</div>
+  <script>
+  (function () {
+    try { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } catch (e) {}
+
+    // читаем параметры из запроса
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+
+    // чистим chat_id от фрагмента #tgWebAppVersion=...
+    const clean = v => (v || '').toString().split('#')[0];
+    if (params.has('telegram_chat_id')) {
+      params.set('telegram_chat_id', clean(params.get('telegram_chat_id')));
+    }
+
+    // собираем целевой URL Tally
+    const TALLY_BASE = 'https://tally.so/r/mVkWaa';
+    const target = TALLY_BASE + '?' + params.toString();
+
+    // чистим адресную строку (без #...) и уходим редиректом
+    try { history.replaceState({}, document.title, url.pathname + '?' + params.toString()); } catch(e) {}
+    location.replace(target);
+  })();
+  </script>
+</body>
+</html>
