@@ -15,25 +15,23 @@
   <div class="box">Opening…</div>
   <script>
   (function () {
+    // Разворачиваем WebApp на полный экран
     try { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } catch (e) {}
 
-    // Карта маршрутов: путь -> Tally URL
+    // Карта маршрутов: путь -> целевой URL (можно легко дополнять)
     const ROUTES = {
-      "/savol":    "https://tally.so/r/WO9PEv",  // SAVOL-JAVOB
-      "/qollanma": "https://tally.so/r/kdaOQr",  // QO'LLANMA
-      "/anketa":   "https://tally.so/r/mVkWaa",  // ANKETA
-      // fallback на /anketa, если путь неизвестен
-      "/":         "https://tally.so/r/mVkWaa"
+      "/savol":    "https://tally.so/r/WO9PEv", // savol-javob
+      "/qollanma": "https://tally.so/r/kdaOQr", // qo'llanma
+      "/anketa":   "https://tally.so/r/mVkWaa", // anketa
+      "/":         "https://tally.so/r/mVkWaa"  // по умолчанию
     };
 
-    // Нормализуем pathname (без завершающего /)
-    let p = (location.pathname || "/").replace(/\/+$/,'');
+    // Нормализуем путь (без завершающего /), в нижний регистр
+    let p = (location.pathname || "/").replace(/\/+$/,'').toLowerCase();
     if (!p) p = "/";
 
-    // Если открыли корень — переход к /anketa (необязательно, но удобно)
-    if (p === "") p = "/";
-
-    const target = ROUTES[p] || ROUTES["/anketa"];
+    // Переходим на целевой URL; если путь неизвестен — используем / (anketa)
+    const target = ROUTES[p] || ROUTES["/"];
     location.replace(target);
   })();
   </script>
