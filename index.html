@@ -15,22 +15,24 @@
   <div class="box">Opening…</div>
   <script>
   (function () {
-    // Развернуть WebApp на весь экран (без модификации URL)
+    // Разворачиваем WebApp
     try { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } catch (e) {}
 
-    // Маршруты: путь → целевой URL (легко дополнять новыми пунктами)
+    // Маршруты
     const ROUTES = {
-      "/savol":    "https://tally.so/r/WO9PEv", // savol-javob
-      "/qollanma": "https://tally.so/r/kdaOQr", // qo'llanma
-      "/anketa":   "https://tally.so/r/WO9PEv"  // anketa
+      "savol":    "https://tally.so/r/WO9PEv", // savol-javob
+      "qollanma": "https://tally.so/r/kdaOQr", // qo'llanma
+      "anketa":   "https://tally.so/r/mVkWaa"  // anketa
     };
 
-    // Нормализуем путь (без завершающего /), в нижний регистр
-    let p = (location.pathname || "/").replace(/\/+$/,'').toLowerCase();
-    if (!p) p = "/";
+    // Читаем параметр p из URL (например, ?p=savol)
+    const params = new URLSearchParams(window.location.search);
+    const page = (params.get("p") || "").toLowerCase();
 
-    // Переходим на целевой URL (никаких параметров не добавляем/не правим)
-    const target = ROUTES[p] || ROUTES["/"];
+    // Определяем целевой адрес
+    const target = ROUTES[page] || ROUTES["savol"];
+
+    // Редирект без задержки
     location.replace(target);
   })();
   </script>
