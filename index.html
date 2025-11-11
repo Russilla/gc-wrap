@@ -17,22 +17,23 @@
   (function () {
     try { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } catch (e) {}
 
-    // читаем параметры из запроса
-    const url = new URL(window.location.href);
-    const params = url.searchParams;
+    // Карта маршрутов: путь -> Tally URL
+    const ROUTES = {
+      "/savol":    "https://tally.so/r/WO9PEv",  // SAVOL-JAVOB
+      "/qollanma": "https://tally.so/r/kdaOQr",  // QO'LLANMA
+      "/anketa":   "https://tally.so/r/mVkWaa",  // ANKETA
+      // fallback на /anketa, если путь неизвестен
+      "/":         "https://tally.so/r/mVkWaa"
+    };
 
-    // чистим chat_id от фрагмента #tgWebAppVersion=...
-    const clean = v => (v || '').toString().split('#')[0];
-    if (params.has('telegram_chat_id')) {
-      params.set('telegram_chat_id', clean(params.get('telegram_chat_id')));
-    }
+    // Нормализуем pathname (без завершающего /)
+    let p = (location.pathname || "/").replace(/\/+$/,'');
+    if (!p) p = "/";
 
-    // собираем целевой URL Tally
-    const TALLY_BASE = 'https://tally.so/r/mVkWaa';
-    const target = TALLY_BASE + '?' + params.toString();
+    // Если открыли корень — переход к /anketa (необязательно, но удобно)
+    if (p === "") p = "/";
 
-    // чистим адресную строку (без #...) и уходим редиректом
-    try { history.replaceState({}, document.title, url.pathname + '?' + params.toString()); } catch(e) {}
+    const target = ROUTES[p] || ROUTES["/anketa"];
     location.replace(target);
   })();
   </script>
